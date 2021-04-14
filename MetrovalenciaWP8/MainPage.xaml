@@ -1,0 +1,173 @@
+﻿<phone:PhoneApplicationPage  x:Class="Metrovalencia.MainPage"
+                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+                             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+                             xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                             xmlns:google="clr-namespace:Google.AdMob.Ads.WindowsPhone7.WPF;assembly=Google.AdMob.Ads.WindowsPhone7"
+                             xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+                             xmlns:c4f="clr-namespace:Coding4Fun.Phone.Controls;assembly=Coding4Fun.Phone.Controls"
+                             mc:Ignorable="d"
+                             d:DesignWidth="480"
+                             d:DesignHeight="800"
+                             d:DataContext="{d:DesignData SampleData/ViewModelFavoritesSampleData.xaml}"
+                             FontFamily="{StaticResource PhoneFontFamilyNormal}"
+                             FontSize="{StaticResource PhoneFontSizeNormal}"
+                             Foreground="{StaticResource PhoneForegroundBrush}"
+                             SupportedOrientations="Portrait"
+                             Orientation="Portrait"
+                             toolkit:TiltEffect.IsTiltEnabled="True"
+                             shell:SystemTray.IsVisible="true"
+                             Style="{StaticResource TransitionPageStyle}">
+
+    <Grid x:Name="LayoutRoot"
+          Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <controls:Panorama Grid.Row="0"
+                           Name="MainPanorama"
+                           Foreground="{StaticResource PhoneAccentBrush}"
+                           Title="metrovalencia"
+                           Background="{Binding PanoramaBackgroundImage}">
+            <controls:PanoramaItem Header="{Binding LocalizedResources.HeaderFavorites, Source={StaticResource LocalizedStrings}}">
+                <StackPanel Orientation="Vertical">
+                    <Button x:Name="NewFavorite"
+                            Content="{Binding LocalizedResources.NewFavoriteButton, Source={StaticResource LocalizedStrings}}"
+                            Click="AddButton_Click"/>
+
+                    <ListBox x:Name="FavoritesList"
+                             Margin="0,0,-12,0"
+                             SelectionChanged="Favorites_SelectionChanged"
+                             ItemsSource="{Binding Items}"
+                             toolkit:TurnstileFeatherEffect.FeatheringIndex="1"
+                             Height="400">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,5"
+                                            Width="432"
+                                            Height="78">
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu>
+                                            <toolkit:MenuItem Header="{Binding LocalizedResources.MenuEdit, Source={StaticResource LocalizedStrings}}"
+                                                              Click="EditMenu_Click" />
+                                            <toolkit:MenuItem Header="{Binding LocalizedResources.MenuPinTile, Source={StaticResource LocalizedStrings}}"
+                                                              Click="PinMenu_Click" />
+                                            <toolkit:MenuItem Header="{Binding LocalizedResources.MenuDelete, Source={StaticResource LocalizedStrings}}"
+                                                              Click="DeleteMenu_Click" />
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                    <TextBlock Text="{Binding Title}"
+                                               TextWrapping="Wrap"
+                                               TextTrimming="WordEllipsis"
+                                               FontSize="32"
+                                               Style="{StaticResource PhoneTextNormalStyle}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </controls:PanoramaItem>
+
+            <controls:PanoramaItem Header="{Binding LocalizedResources.HeaderSearch, Source={StaticResource LocalizedStrings}}">
+                <ScrollViewer>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Height="30"
+                                   FontSize="24"
+                                   Text="{Binding LocalizedResources.Departure, Source={StaticResource LocalizedStrings}}"
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   Foreground="{StaticResource PhoneAccentBrush}" />
+                        <TextBox x:Name="DepartureField"
+                                 IsReadOnly="True"
+                                 Tap="DepartureField_Tap"
+                                 Style="{StaticResource ReadOnlyField}" />
+
+                        <TextBlock Height="30"
+                                   FontSize="24"
+                                   Text="{Binding LocalizedResources.Arrival, Source={StaticResource LocalizedStrings}}"
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   Foreground="{StaticResource PhoneAccentBrush}" />
+                        <TextBox x:Name="ArrivalField"
+                                 IsReadOnly="True"
+                                 Tap="ArrivalField_Tap"
+                                 Style="{StaticResource ReadOnlyField}" />
+
+                        <TextBlock Height="30"
+                                   FontSize="24"
+                                   Text="{Binding LocalizedResources.MainPageDepartureTime, Source={StaticResource LocalizedStrings}}"
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   Foreground="{StaticResource PhoneAccentBrush}" />
+                        <toolkit:TimePicker x:Name="DepartureTime" />
+
+                        <TextBlock Height="30"
+                                   FontSize="24"
+                                   Text="{Binding LocalizedResources.MainPageArrivalTime, Source={StaticResource LocalizedStrings}}"
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   Foreground="{StaticResource PhoneAccentBrush}" />
+                        <toolkit:TimePicker x:Name="ArrivalTime" />
+
+                        <TextBlock Height="30"
+                                   FontSize="24"
+                                   Text="{Binding LocalizedResources.MainPageTripDate, Source={StaticResource LocalizedStrings}}"
+                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                   Foreground="{StaticResource PhoneAccentBrush}" />
+                        <toolkit:DatePicker x:Name="TripDate"
+                                            Value="08/04/2012" />
+
+                        <Button x:Name="SearchButton"
+                                Content="{Binding LocalizedResources.MainPageSearch, Source={StaticResource LocalizedStrings}}"
+                                Click="SearchButton_Click" />
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+
+            <controls:PanoramaItem Header="{Binding LocalizedResources.HeaderMaps, Source={StaticResource LocalizedStrings}}">
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="MapImage"
+                            Margin="-10,0,0,0"
+                            Width="276"
+                            Height="276"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Style="{StaticResource ChromeLessButton}"
+                            Click="MapImage_Click">
+                        <Image Source="Images/map_thumb.jpg"
+                               Width="276"
+                               Height="276" />
+                    </Button>
+                </StackPanel>
+            </controls:PanoramaItem>
+
+            <controls:PanoramaItem Header="{Binding LocalizedResources.HeaderAbout, Source={StaticResource LocalizedStrings}}"
+                                   Foreground="{StaticResource PhoneAccentBrush}">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Style="{StaticResource PhoneTextTitle2Style}"
+                               TextAlignment="Center">
+                    <Run Text="{Binding LocalizedResources.AboutLine1, Source={StaticResource LocalizedStrings}}" />
+                    <LineBreak />
+                    <Run Text="{Binding LocalizedResources.AboutLine2, Source={StaticResource LocalizedStrings}}" />
+                    </TextBlock>
+                    <TextBlock TextAlignment="Center"
+                               Tap="steelcodeLink_Tap"
+                               Foreground="{StaticResource PhoneAccentBrush}">
+                    <Run x:Name="steelcodeLink"
+                         Text="{Binding LocalizedResources.AboutLink, Source={StaticResource LocalizedStrings}}" />
+                    </TextBlock>
+                    <Button Margin="0,50,0,0"
+                            x:Name="feedbackBtn"
+                            Content="{Binding LocalizedResources.AboutFeedback, Source={StaticResource LocalizedStrings}}"
+                            Click="feedbackBtn_Click" />
+                </StackPanel>
+            </controls:PanoramaItem>
+        </controls:Panorama>
+
+        <google:BannerAd x:Name="ad"
+                         Grid.Row="1"
+                         AdUnitID="{StaticResource admob_key}" />
+    </Grid>
+
+</phone:PhoneApplicationPage>

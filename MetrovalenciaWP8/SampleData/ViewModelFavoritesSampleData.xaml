@@ -1,0 +1,13 @@
+﻿<local:ViewModelFavorites 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Metrovalencia.ViewModels">
+
+    <local:ViewModelFavorites.Items>
+        <local:ViewModelFavorites Title="La Eliana - Turia" />
+        <local:ViewModelFavorites Title="Turia - La Eliana" />
+        <local:ViewModelFavorites Title="Pl. España - Turia" />
+        <local:ViewModelFavorites Title="Turia - Pl. España" />
+    </local:ViewModelFavorites.Items>
+
+</local:ViewModelFavorites>
